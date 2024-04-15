@@ -8,6 +8,9 @@ build/
 ### Dev ###
 *-local.yaml
 
+### MinIO ###
+storage/
+
 ### STS ###
 .apt_generated
 .classpath
