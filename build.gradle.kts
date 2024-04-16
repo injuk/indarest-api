@@ -23,6 +23,7 @@ repositories {
 val postgresqlVersion = "42.7.2"
 val r2dbcPostgresqlVersion = "1.0.4.RELEASE"
 val minioVersion = "8.5.9"
+val jooqVersion = "3.19.7"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -31,19 +32,18 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.springframework.hateoas:spring-hateoas")
 
 	runtimeOnly("org.postgresql:postgresql:$postgresqlVersion")
 	runtimeOnly("org.postgresql:r2dbc-postgresql:$r2dbcPostgresqlVersion")
 
-	implementation("org.jooq:jooq")
-	implementation("org.jooq:jooq-kotlin")
-	implementation("org.jooq:jooq-kotlin-coroutines")
-
-	jooqCodegen("jakarta.xml.bind:jakarta.xml.bind-api:4.0.1")
-	jooqCodegen("org.jooq:jooq-meta-extensions")
-	jooqCodegen("org.jooq:jooq-meta-kotlin")
+	implementation("org.jooq:jooq:${jooqVersion}")
+	implementation("org.jooq:jooq-kotlin:${jooqVersion}")
+	jooqCodegen("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
+	jooqCodegen("org.jooq:jooq-meta-extensions:${jooqVersion}")
+	jooqCodegen("org.jooq:jooq-meta-kotlin:${jooqVersion}")
 	jooqCodegen("org.postgresql:postgresql:$postgresqlVersion")
 
 	implementation("io.minio:minio:$minioVersion")
@@ -86,7 +86,7 @@ jooq {
 						this.isImplicitJoinPathsAsKotlinProperties = false
 					}
 					target {
-						packageName = "rest.mjis.indarest.persistence.postgresql.jooq"
+						packageName = "rest.mjis.indarest.infrastructure.database.jooq"
 						directory = "$projectDir/generated/jooq/src/main"
 					}
 					strategy {
