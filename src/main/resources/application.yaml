@@ -1,6 +1,14 @@
 spring:
   application:
     name: indarest
+  r2dbc:
+    url: "r2dbc:postgresql://127.0.0.1:35432/indarest"
+    username: "postgres"
+    password: "my-first-nest-pw"
+    pool:
+      initial-size: 10
+      max-size: 20
+      validation-query: SELECT 1
 
 server:
   port: 33728
