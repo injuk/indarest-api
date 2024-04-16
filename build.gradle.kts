@@ -80,8 +80,7 @@ jooq {
 					name = "org.jooq.codegen.KotlinGenerator"
 					database {
 						name = "org.jooq.meta.postgres.PostgresDatabase"
-						inputSchema = "public"
-						excludes = "flyway_schema_history.*"
+						inputSchema = "mjis"
 					}
 					generate {
 						this.isImplicitJoinPathsAsKotlinProperties = false
