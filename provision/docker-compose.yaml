@@ -12,3 +12,4 @@ services:
     volumes:
       - ../objectStorage/minio:/data
     command: 'server /data --console-address ":9001"'
+    restart: always
