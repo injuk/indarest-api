@@ -4,5 +4,9 @@ import java.time.OffsetDateTime
 
 data class ActionContext(
     val at: OffsetDateTime,
-    val by: UserInfo,
-)
+    val by: By,
+) {
+    data class By(
+        val id: Long,
+    )
+}

@@ -1,5 +1,7 @@
 package rest.mjis.indarest.domain.useCases
 
+import java.time.OffsetDateTime
+
 interface CreatePin : UseCase<CreatePin.Request, CreatePin.Response> {
     override val name: String
         get() = CreatePin::class.java.name
@@ -12,5 +14,6 @@ interface CreatePin : UseCase<CreatePin.Request, CreatePin.Response> {
 
     data class Response(
         val id: Long,
+        val createdAt: OffsetDateTime,
     )
 }
