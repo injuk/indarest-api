@@ -26,8 +26,7 @@ class User(
         )
     }
 
-    val traceId: String
-        get() = UUID.randomUUID().toString()
+    private val traceId: String by lazy { UUID.randomUUID().toString() }
 
     fun <Request, Response> invoke(useCase: UseCase<Request, Response>): UseCaseHolder<Request, Response> =
         UseCaseHolder(

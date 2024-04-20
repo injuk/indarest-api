@@ -4,5 +4,5 @@ import rest.mjis.indarest.domain.User
 
 interface UseCase <Request, Response> {
     val name: String
-    fun execute(user: User, data: Request): Response
+    suspend fun execute(user: User, data: Request): Response
 }

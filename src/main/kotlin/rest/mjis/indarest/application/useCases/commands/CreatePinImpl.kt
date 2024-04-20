@@ -6,7 +6,7 @@ import rest.mjis.indarest.domain.useCases.CreatePin
 
 @Command
 class CreatePinImpl : CreatePin {
-    override fun execute(user: User, data: CreatePin.Request): CreatePin.Response {
+    override suspend fun execute(user: User, data: CreatePin.Request): CreatePin.Response {
         TODO("Not yet implemented")
     }
 }

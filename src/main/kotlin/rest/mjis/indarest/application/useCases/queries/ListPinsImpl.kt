@@ -8,7 +8,7 @@ import rest.mjis.indarest.domain.useCases.ListPins
 
 @Query
 class ListPinsImpl : ListPins {
-    override fun execute(user: User, data: ListPins.Request): ListResponses<Pin.Summary> {
+    override suspend fun execute(user: User, data: ListPins.Request): ListResponses<Pin.Summary> {
         TODO("Not yet implemented")
     }
 }
