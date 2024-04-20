@@ -12,3 +12,7 @@ spring:
 
 server:
   port: 33728
+
+storage:
+  endpoint:
+    pins: "http://localhost:9000/indarest-resources/pins"
