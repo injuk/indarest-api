@@ -24,12 +24,14 @@ class CreatePinImpl(
     override suspend fun execute(user: User, data: CreatePin.Request): CreatePin.Response {
         require(data.resourceUrl.startsWith(pinStorageEndpoint)) { "resource url has invalid storage endpoint" }
 
-        val isObjectExists = storageClient.isExists(data.objectKey)
+        val isObjectExists = storageClient.isExists(data.resourceUrl.getObjectKey())
         if(!isObjectExists) {
-            throw RuntimeException("resource(${data.objectKey}) not found")
+            throw RuntimeException("resource(${data.resourceUrl.getObjectKey()}) not found")
         }
 
         val pinId = pinsDataAccess.insert(user, data)
         return CreatePin.Response(pinId)
     }
+
+    private fun String.getObjectKey(): String = replace(pinStorageEndpoint, properties.path.pins)
 }
