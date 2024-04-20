@@ -1,6 +1,6 @@
 package rest.mjis.indarest.domain
 
-data class UpdatePart<T>(
+class UpdatePart<T> private constructor(
     val value: T?,
     val isDefined: Boolean,
 ) {
