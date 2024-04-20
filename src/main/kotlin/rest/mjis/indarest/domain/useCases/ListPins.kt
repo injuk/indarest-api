@@ -9,6 +9,6 @@ interface ListPins : UseCase<ListPins.Request, ListResponses<Pin.Summary>> {
 
     data class Request(
         val size: Int,
-        val cursor: String,
+        val cursor: String?,
     )
 }

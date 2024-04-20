@@ -14,6 +14,5 @@ interface CreatePin : UseCase<CreatePin.Request, CreatePin.Response> {
 
     data class Response(
         val id: Long,
-        val createdAt: OffsetDateTime,
     )
 }
