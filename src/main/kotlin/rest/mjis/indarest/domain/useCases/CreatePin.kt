@@ -10,6 +10,7 @@ interface CreatePin : UseCase<CreatePin.Request, CreatePin.Response> {
         val name: String?,
         val description: String?,
         val resourceUrl: String,
+        val objectKey: String,
     )
 
     data class Response(
