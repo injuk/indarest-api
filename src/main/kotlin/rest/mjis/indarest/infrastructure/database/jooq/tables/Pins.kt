@@ -99,7 +99,7 @@ open class Pins(
     /**
      * The column <code>mjis.pins.created_by_id</code>.
      */
-    val CREATED_BY_ID: TableField<PinsRecord, String?> = createField(DSL.name("created_by_id"), SQLDataType.VARCHAR(255).nullable(false), this, "")
+    val CREATED_BY_ID: TableField<PinsRecord, Long?> = createField(DSL.name("created_by_id"), SQLDataType.BIGINT.nullable(false), this, "")
 
     /**
      * The column <code>mjis.pins.updated_at</code>.

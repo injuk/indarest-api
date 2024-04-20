@@ -15,12 +15,12 @@ create table if not exists "mjis".users
 create table if not exists "mjis".pins
 (
     id            bigint generated always as identity,
-    name          character varying(256)          default null,
-    description   character varying(1024)         default null,
-    resource_url  character varying(1024)         default null,
-    created_at    timestamp              not null default current_timestamp,
-    created_by_id character varying(255) not null,
-    updated_at    timestamp              not null default current_timestamp,
+    name          character varying(256)  default null,
+    description   character varying(1024) default null,
+    resource_url  character varying(1024) default null,
+    created_at    timestamp not null      default current_timestamp,
+    created_by_id bigint    not null,
+    updated_at    timestamp not null      default current_timestamp,
 
     primary key (id)
 );

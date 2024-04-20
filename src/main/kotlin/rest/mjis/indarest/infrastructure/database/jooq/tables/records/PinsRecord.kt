@@ -38,9 +38,9 @@ open class PinsRecord() : UpdatableRecordImpl<PinsRecord>(Pins.PINS) {
         set(value): Unit = set(4, value)
         get(): LocalDateTime? = get(4) as LocalDateTime?
 
-    open var createdById: String?
+    open var createdById: Long?
         set(value): Unit = set(5, value)
-        get(): String? = get(5) as String?
+        get(): Long? = get(5) as Long?
 
     open var updatedAt: LocalDateTime?
         set(value): Unit = set(6, value)
@@ -55,7 +55,7 @@ open class PinsRecord() : UpdatableRecordImpl<PinsRecord>(Pins.PINS) {
     /**
      * Create a detached, initialised PinsRecord
      */
-    constructor(id: Long? = null, name: String? = null, description: String? = null, resourceUrl: String? = null, createdAt: LocalDateTime? = null, createdById: String? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, name: String? = null, description: String? = null, resourceUrl: String? = null, createdAt: LocalDateTime? = null, createdById: Long? = null, updatedAt: LocalDateTime? = null): this() {
         this.id = id
         this.name = name
         this.description = description
