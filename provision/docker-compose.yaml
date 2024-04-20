@@ -2,7 +2,7 @@ version: '3.9'
 services:
   minio:
     image: minio/minio
-    container_name: indarest-storage
+    container_name: indarest-objectStorage
     ports:
       - 9000:9000
       - 9001:9001
@@ -10,5 +10,5 @@ services:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: my-secure-pw
     volumes:
-      - ../storage/minio:/data
+      - ../objectStorage/minio:/data
     command: 'server /data --console-address ":9001"'

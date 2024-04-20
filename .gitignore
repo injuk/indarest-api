@@ -10,7 +10,7 @@ build/
 generated/
 
 ### MinIO ###
-storage/
+objectStorage/
 
 ### STS ###
 .apt_generated
