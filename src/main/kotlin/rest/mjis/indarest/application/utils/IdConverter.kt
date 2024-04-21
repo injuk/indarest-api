@@ -16,5 +16,5 @@ internal object IdConverter {
     internal fun String.decode(): Long = convert(this)
 
     private fun convert(cipher: String?): Long =
-        cipher?.let { converter.decode(it).firstOrNull() } ?: throw RuntimeException("hashId faile to decode")
+        cipher?.let { converter.decode(it).firstOrNull() } ?: throw RuntimeException("hashId fails to decode")
 }
