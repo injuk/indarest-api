@@ -8,7 +8,7 @@ interface ListPins : UseCase<ListPins.Request, ListResponses<Pin.Summary>> {
         get() = ListPins::class.java.name
 
     data class Request(
-        val size: Int,
+        val size: Int?,
         val cursor: String?,
     )
 }
