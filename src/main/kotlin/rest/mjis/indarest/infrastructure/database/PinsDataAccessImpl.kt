@@ -15,6 +15,7 @@ import rest.mjis.indarest.domain.models.PinResource
 import rest.mjis.indarest.domain.useCases.CreatePin
 import rest.mjis.indarest.domain.useCases.UpdatePin
 import rest.mjis.indarest.infrastructure.database.jooq.tables.references.PINS
+import java.time.OffsetDateTime
 
 @Repository
 class PinsDataAccessImpl(
@@ -59,8 +60,25 @@ class PinsDataAccessImpl(
         }
     }
 
-    override suspend fun findOne(id: Long): Pin {
-        TODO("Not yet implemented")
+    override suspend fun findOne(id: Long): Pin? = dsl.run {
+        selectFrom(PINS)
+            .where(PINS.ID.eq(id))
+    }.awaitFirst()?.let {
+        Pin(
+            id = it.get(PINS.ID)!!,
+            name = it.get(PINS.NAME),
+            description = it.get(PINS.DESCRIPTION),
+            resource = PinResource(
+                url = it.get(PINS.RESOURCE_URL)!!,
+            ),
+            created = ActionContext.from(
+                at = it.get(PINS.CREATED_AT)!!,
+                creator = it.get(PINS.CREATED_BY_ID)!!,
+            ),
+            updated = Pin.Updated(
+                at = it.get(PINS.UPDATED_AT)!!.atOffset(OffsetDateTime.now().offset),
+            )
+        )
     }
 
     override suspend fun update(id: Long, data: UpdatePin.Request): AffectedRows {

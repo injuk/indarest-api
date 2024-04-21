@@ -45,7 +45,7 @@ class CreatePinImplTest {
             TODO("Not yet implemented")
         }
 
-        override suspend fun findOne(id: Long): Pin {
+        override suspend fun findOne(id: Long): Pin? {
             TODO("Not yet implemented")
         }
 

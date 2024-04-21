@@ -59,7 +59,7 @@ class ListPinsImplTest {
             return repository.subList(startIdx, endIdx)
         }
 
-        override suspend fun findOne(id: Long): Pin {
+        override suspend fun findOne(id: Long): Pin? {
             TODO("Not yet implemented")
         }
 
