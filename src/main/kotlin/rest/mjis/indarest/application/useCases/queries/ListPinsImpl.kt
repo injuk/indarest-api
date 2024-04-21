@@ -20,6 +20,8 @@ class ListPinsImpl(
     }
 
     override suspend fun execute(user: User, request: ListPins.Request): ListResponses<Pin.Summary> {
+        require(request.size != 0) { "size cannot be 0" }
+
         val condition = SearchCondition(
             size = request.size ?: DEFAULT_PINS_LIMIT,
             cursor = request.cursor?.decode(),
