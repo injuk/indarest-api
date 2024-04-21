@@ -1,6 +1,6 @@
 package rest.mjis.indarest.domain
 
-data class PinsSearch(
+data class SearchCondition<T>(
     val size: Int,
-    val cursor: String?,
+    val cursor: T?,
 )

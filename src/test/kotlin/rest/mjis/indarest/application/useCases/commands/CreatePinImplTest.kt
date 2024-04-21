@@ -1,7 +1,7 @@
 package rest.mjis.indarest.application.useCases.commands
 
 import kotlinx.coroutines.runBlocking
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +11,7 @@ import rest.mjis.indarest.application.configurations.ApplicationProperties
 import rest.mjis.indarest.application.gateways.clients.StorageClient
 import rest.mjis.indarest.application.gateways.dataAccesses.PinsDataAccess
 import rest.mjis.indarest.domain.AffectedRows
-import rest.mjis.indarest.domain.PinsSearch
+import rest.mjis.indarest.domain.SearchCondition
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.models.Pin
 import rest.mjis.indarest.domain.useCases.CreatePin
@@ -41,7 +41,7 @@ class CreatePinImplTest {
             return CREATED_PIN_ID
         }
 
-        override suspend fun findBy(search: PinsSearch): List<Pin.Summary> {
+        override suspend fun findBy(conditions: SearchCondition<Long>): List<Pin.Summary> {
             TODO("Not yet implemented")
         }
 
