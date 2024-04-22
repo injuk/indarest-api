@@ -1,6 +1,7 @@
 package rest.mjis.indarest.infrastructure.database
 
 import kotlinx.coroutines.reactive.awaitFirst
+import kotlinx.coroutines.reactive.awaitFirstOrNull
 import org.jooq.DSLContext
 import org.jooq.impl.DSL.noCondition
 import org.springframework.stereotype.Repository
@@ -15,6 +16,7 @@ import rest.mjis.indarest.domain.models.PinResource
 import rest.mjis.indarest.domain.useCases.CreatePin
 import rest.mjis.indarest.domain.useCases.UpdatePin
 import rest.mjis.indarest.infrastructure.database.jooq.tables.references.PINS
+import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
 @Repository
@@ -63,7 +65,7 @@ class PinsDataAccessImpl(
     override suspend fun findOne(id: Long): Pin? = dsl.run {
         selectFrom(PINS)
             .where(PINS.ID.eq(id))
-    }.awaitFirst()?.let {
+    }.awaitFirstOrNull()?.let {
         Pin(
             id = it.get(PINS.ID)!!,
             name = it.get(PINS.NAME),
@@ -82,7 +84,21 @@ class PinsDataAccessImpl(
     }
 
     override suspend fun update(id: Long, data: UpdatePin.Request): AffectedRows {
-        TODO("Not yet implemented")
+        val count = dsl.run {
+            update(PINS)
+                .set(PINS.UPDATED_AT, LocalDateTime.now())
+                .apply {
+                    if (data.name.isDefined) {
+                        set(PINS.NAME, data.name.value)
+                    }
+                    if (data.description.isDefined) {
+                        set(PINS.DESCRIPTION, data.description.value)
+                    }
+                }
+                .where(PINS.ID.eq(id))
+        }.awaitFirst()
+
+        return AffectedRows(count)
     }
 
     override suspend fun delete(id: Long): AffectedRows {

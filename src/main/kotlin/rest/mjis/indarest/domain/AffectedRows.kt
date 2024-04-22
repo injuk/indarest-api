@@ -1,5 +1,7 @@
 package rest.mjis.indarest.domain
 
 data class AffectedRows(
-    val value: Int,
-)
+    val count: Int,
+) {
+    fun isNotAffected(): Boolean = count == 0
+}
