@@ -106,6 +106,11 @@ open class Pins(
      */
     val UPDATED_AT: TableField<PinsRecord, LocalDateTime?> = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "")
 
+    /**
+     * The column <code>mjis.pins.thumbnail_url</code>.
+     */
+    val THUMBNAIL_URL: TableField<PinsRecord, String?> = createField(DSL.name("thumbnail_url"), SQLDataType.VARCHAR(1024), this, "")
+
     private constructor(alias: Name, aliased: Table<PinsRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<PinsRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<PinsRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)

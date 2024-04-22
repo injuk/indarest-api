@@ -11,8 +11,8 @@ import rest.mjis.indarest.domain.AffectedRows
 import rest.mjis.indarest.domain.SearchCondition
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.models.ActionContext
+import rest.mjis.indarest.domain.models.ImageResource
 import rest.mjis.indarest.domain.models.Pin
-import rest.mjis.indarest.domain.models.PinResource
 import rest.mjis.indarest.domain.useCases.CreatePin
 import rest.mjis.indarest.domain.useCases.UpdatePin
 import rest.mjis.indarest.infrastructure.database.jooq.tables.references.PINS
@@ -51,9 +51,12 @@ class PinsDataAccessImpl(
             Pin.Summary(
                 id = it.get(PINS.ID)!!,
                 name = it.get(PINS.NAME),
-                resource = PinResource(
-                    url = it.get(PINS.RESOURCE_URL)!!,
-                ),
+                resource = it.get(PINS.RESOURCE_URL)?.let { resourceUrl ->
+                    ImageResource(resourceUrl)
+                },
+                thumbnail = it.get(PINS.THUMBNAIL_URL)?.let { thumbnailUrl ->
+                    ImageResource(thumbnailUrl)
+                },
                 created = ActionContext.from(
                     at = it.get(PINS.CREATED_AT)!!,
                     creator = it.get(PINS.CREATED_BY_ID)!!,
@@ -70,9 +73,12 @@ class PinsDataAccessImpl(
             id = it.get(PINS.ID)!!,
             name = it.get(PINS.NAME),
             description = it.get(PINS.DESCRIPTION),
-            resource = PinResource(
-                url = it.get(PINS.RESOURCE_URL)!!,
-            ),
+            resource = it.get(PINS.RESOURCE_URL)?.let { resourceUrl ->
+                ImageResource(resourceUrl)
+            },
+            thumbnail = it.get(PINS.THUMBNAIL_URL)?.let { thumbnailUrl ->
+                ImageResource(thumbnailUrl)
+            },
             created = ActionContext.from(
                 at = it.get(PINS.CREATED_AT)!!,
                 creator = it.get(PINS.CREATED_BY_ID)!!,
@@ -102,6 +108,11 @@ class PinsDataAccessImpl(
     }
 
     override suspend fun delete(id: Long): AffectedRows {
-        TODO("Not yet implemented")
+        val count = dsl.run {
+            deleteFrom(PINS)
+                .where(PINS.ID.eq(id))
+        }.awaitFirst()
+
+        return AffectedRows(count)
     }
 }

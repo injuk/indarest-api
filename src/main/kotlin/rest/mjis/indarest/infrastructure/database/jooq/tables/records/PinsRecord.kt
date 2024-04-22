@@ -46,6 +46,10 @@ open class PinsRecord() : UpdatableRecordImpl<PinsRecord>(Pins.PINS) {
         set(value): Unit = set(6, value)
         get(): LocalDateTime? = get(6) as LocalDateTime?
 
+    open var thumbnailUrl: String?
+        set(value): Unit = set(7, value)
+        get(): String? = get(7) as String?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -55,7 +59,7 @@ open class PinsRecord() : UpdatableRecordImpl<PinsRecord>(Pins.PINS) {
     /**
      * Create a detached, initialised PinsRecord
      */
-    constructor(id: Long? = null, name: String? = null, description: String? = null, resourceUrl: String? = null, createdAt: LocalDateTime? = null, createdById: Long? = null, updatedAt: LocalDateTime? = null): this() {
+    constructor(id: Long? = null, name: String? = null, description: String? = null, resourceUrl: String? = null, createdAt: LocalDateTime? = null, createdById: Long? = null, updatedAt: LocalDateTime? = null, thumbnailUrl: String? = null): this() {
         this.id = id
         this.name = name
         this.description = description
@@ -63,6 +67,7 @@ open class PinsRecord() : UpdatableRecordImpl<PinsRecord>(Pins.PINS) {
         this.createdAt = createdAt
         this.createdById = createdById
         this.updatedAt = updatedAt
+        this.thumbnailUrl = thumbnailUrl
         resetChangedOnNotNull()
     }
 }

@@ -1,5 +1,5 @@
 package rest.mjis.indarest.domain.models
 
-data class PinResource(
+data class ImageResource(
     val url: String,
 )
