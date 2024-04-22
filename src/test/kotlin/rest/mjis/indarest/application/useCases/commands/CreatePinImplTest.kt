@@ -8,6 +8,7 @@ import rest.mjis.indarest.application.configurations.ApplicationProperties
 import rest.mjis.indarest.application.gateways.clients.StorageClient
 import rest.mjis.indarest.application.gateways.dataAccesses.PinsDataAccess
 import rest.mjis.indarest.application.useCases.MockPinDataAccessImpl
+import rest.mjis.indarest.application.useCases.MockStorageClassImpl
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.useCases.CreatePin
 
@@ -16,8 +17,7 @@ class CreatePinImplTest {
         private const val VALID_ENDPOINT = "http://localhost"
         private const val VALID_BUCKET_NAME = "test-resources"
         private const val VALID_ENDPOINT_PREFIX = "$VALID_ENDPOINT/$VALID_BUCKET_NAME"
-        private const val VALID_OBJECT_KEY = "pins/valid-object-key.png"
-        private const val VALID_RESOURCE_URL = "$VALID_ENDPOINT_PREFIX/$VALID_OBJECT_KEY"
+        private const val VALID_RESOURCE_URL = "$VALID_ENDPOINT_PREFIX/${MockStorageClassImpl.VALID_OBJECT_KEY}"
     }
 
     val properties: ApplicationProperties = ApplicationProperties(
@@ -30,11 +30,7 @@ class CreatePinImplTest {
         )
     )
 
-    private val storageClient: StorageClient = object : StorageClient {
-        override suspend fun isExists(key: String): Boolean {
-            return key == VALID_OBJECT_KEY
-        }
-    }
+    private val storageClient: StorageClient = MockStorageClassImpl()
 
     private val pinsDataAccess: PinsDataAccess = MockPinDataAccessImpl()
 
