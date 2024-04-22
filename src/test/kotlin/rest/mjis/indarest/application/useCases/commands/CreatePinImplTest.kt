@@ -4,31 +4,31 @@ import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
 import rest.mjis.indarest.application.configurations.ApplicationProperties
 import rest.mjis.indarest.application.gateways.clients.StorageClient
 import rest.mjis.indarest.application.gateways.dataAccesses.PinsDataAccess
-import rest.mjis.indarest.domain.AffectedRows
-import rest.mjis.indarest.domain.SearchCondition
+import rest.mjis.indarest.application.useCases.MockPinDataAccessImpl
 import rest.mjis.indarest.domain.User
-import rest.mjis.indarest.domain.models.Pin
 import rest.mjis.indarest.domain.useCases.CreatePin
-import rest.mjis.indarest.domain.useCases.UpdatePin
 
-@ActiveProfiles("local")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CreatePinImplTest {
     companion object {
-        private const val VALID_ENDPOINT_PREFIX = "http://localhost:9000/indarest-resources"
+        private const val VALID_ENDPOINT = "http://localhost"
+        private const val VALID_BUCKET_NAME = "test-resources"
+        private const val VALID_ENDPOINT_PREFIX = "$VALID_ENDPOINT/$VALID_BUCKET_NAME"
         private const val VALID_OBJECT_KEY = "pins/valid-object-key.png"
         private const val VALID_RESOURCE_URL = "$VALID_ENDPOINT_PREFIX/$VALID_OBJECT_KEY"
-        private const val CREATED_PIN_ID = 1L
     }
 
-    @Autowired
-    lateinit var properties: ApplicationProperties
+    val properties: ApplicationProperties = ApplicationProperties(
+        endpoint = VALID_ENDPOINT,
+        bucket = VALID_BUCKET_NAME,
+        path = ApplicationProperties.StoragePath("pins"),
+        credential = ApplicationProperties.StorageCredential(
+            accessKey = "test-access-key",
+            secretKey = "test-secret-key",
+        )
+    )
 
     private val storageClient: StorageClient = object : StorageClient {
         override suspend fun isExists(key: String): Boolean {
@@ -36,27 +36,7 @@ class CreatePinImplTest {
         }
     }
 
-    private val pinsDataAccess: PinsDataAccess = object : PinsDataAccess {
-        override suspend fun insert(user: User, data: CreatePin.Request): Long {
-            return CREATED_PIN_ID
-        }
-
-        override suspend fun findBy(conditions: SearchCondition<Long>): List<Pin.Summary> {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun findOne(id: Long): Pin? {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun update(id: Long, data: UpdatePin.Request): AffectedRows {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun delete(id: Long): AffectedRows {
-            TODO("Not yet implemented")
-        }
-    }
+    private val pinsDataAccess: PinsDataAccess = MockPinDataAccessImpl()
 
     @Test
     fun `핀 생성시 Long 형태의 id가 반환된다`(): Unit = runBlocking {
@@ -76,7 +56,7 @@ class CreatePinImplTest {
         ).execute(user, request)
 
         // then
-        assertThat(result.id).isEqualTo(CREATED_PIN_ID)
+        assertThat(result.id).isEqualTo(MockPinDataAccessImpl.CREATED_PIN_ID)
     }
 
     @Test

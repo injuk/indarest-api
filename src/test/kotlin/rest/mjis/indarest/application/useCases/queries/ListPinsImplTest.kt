@@ -5,72 +5,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import rest.mjis.indarest.application.gateways.dataAccesses.PinsDataAccess
-import rest.mjis.indarest.domain.AffectedRows
-import rest.mjis.indarest.domain.SearchCondition
+import rest.mjis.indarest.application.useCases.MockPinDataAccessImpl
 import rest.mjis.indarest.domain.User
-import rest.mjis.indarest.domain.models.ActionContext
-import rest.mjis.indarest.domain.models.Pin
-import rest.mjis.indarest.domain.models.PinResource
-import rest.mjis.indarest.domain.useCases.CreatePin
 import rest.mjis.indarest.domain.useCases.ListPins
-import rest.mjis.indarest.domain.useCases.UpdatePin
-import java.time.LocalDateTime
 
 class ListPinsImplTest {
-    private val dateTime = LocalDateTime.now()
-
-    private fun createPinSummary(id: Int): Pin.Summary {
-        val pinName = "pin(${id})"
-        return Pin.Summary(
-            id = id.toLong(),
-            name = pinName,
-            resource = PinResource(
-                url = "http://localhost:9000/indarest-resources/pins/$pinName.png",
-            ),
-            created = ActionContext.from(dateTime, 1L),
-        )
-    }
-
-    private val pinsDataAccess: PinsDataAccess = object : PinsDataAccess {
-        private val repository: List<Pin.Summary> = (1..100).reversed().map {
-            return@map createPinSummary(it)
-        }
-
-        override suspend fun insert(user: User, data: CreatePin.Request): Long {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun findBy(conditions: SearchCondition<Long>): List<Pin.Summary> {
-            val (size, cursor) = conditions
-
-            val startIdx = if (cursor != null) {
-                repository.indexOfFirst { it.id == cursor }
-            } else {
-                0
-            }
-            val endIdx = (startIdx + size).let {
-                if (it > repository.size) {
-                    repository.size
-                } else {
-                    it
-                }
-            }
-
-            return repository.subList(startIdx, endIdx)
-        }
-
-        override suspend fun findOne(id: Long): Pin? {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun update(id: Long, data: UpdatePin.Request): AffectedRows {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun delete(id: Long): AffectedRows {
-            TODO("Not yet implemented")
-        }
-    }
+    private val pinsDataAccess: PinsDataAccess = MockPinDataAccessImpl()
 
     @Test
     fun `핀 목록 조회시 다음 목록이 있는 경우 null이 아닌 커서가 반환된다`(): Unit = runBlocking {
@@ -90,7 +30,7 @@ class ListPinsImplTest {
         // then
         assertThat(results).isEqualTo(
             listOf(
-                createPinSummary(id = 100)
+                MockPinDataAccessImpl.createPinSummary(id = 100)
             )
         )
         assertThat(cursor).isEqualTo(expectedNextCursor)
@@ -135,7 +75,7 @@ class ListPinsImplTest {
         // then
         assertThat(results.size).isEqualTo(expectedSize)
         assertThat(results).isEqualTo(
-            (81..100).reversed().map { createPinSummary(id = it) }
+            (81..100).reversed().map { MockPinDataAccessImpl.createPinSummary(id = it) }
         )
         assertThat(cursor).isEqualTo(expectedNextCursor)
     }
