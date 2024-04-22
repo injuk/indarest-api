@@ -12,6 +12,6 @@ class MockStorageClassImpl : StorageClient {
     }
 
     override suspend fun deleteAll(keys: List<String>) {
-        TODO("Not yet implemented")
+        /* do nothing */
     }
 }

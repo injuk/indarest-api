@@ -20,7 +20,7 @@ class UpdatePinImplTest {
         // given
         val user = User.create()
         val request = UpdatePin.Request(
-            id = 1L,
+            id = MockPinDataAccessImpl.VALID_PIN_ID,
             name = UpdatePart.from(null),
             description = UpdatePart.from(null),
         )

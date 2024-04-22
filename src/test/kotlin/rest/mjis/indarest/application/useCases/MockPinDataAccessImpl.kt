@@ -91,6 +91,10 @@ class MockPinDataAccessImpl : PinsDataAccess {
     }
 
     override suspend fun delete(id: Long): AffectedRows {
-        TODO("Not yet implemented")
+        return if (id == ID_FOR_NOTHING_AFFECTED) {
+            return AffectedRows(0)
+        } else {
+            return AffectedRows(1)
+        }
     }
 }
