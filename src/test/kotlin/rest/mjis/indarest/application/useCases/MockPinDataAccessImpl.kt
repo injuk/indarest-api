@@ -5,8 +5,8 @@ import rest.mjis.indarest.domain.AffectedRows
 import rest.mjis.indarest.domain.SearchCondition
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.models.ActionContext
+import rest.mjis.indarest.domain.models.ImageResource
 import rest.mjis.indarest.domain.models.Pin
-import rest.mjis.indarest.domain.models.PinResource
 import rest.mjis.indarest.domain.useCases.CreatePin
 import rest.mjis.indarest.domain.useCases.UpdatePin
 import java.time.LocalDateTime
@@ -32,9 +32,10 @@ class MockPinDataAccessImpl : PinsDataAccess {
                 id = id.toLong(),
                 name = pinName,
                 description = "$pinName 설명",
-                resource = PinResource(
+                resource = ImageResource(
                     url = "http://localhost:9000/indarest-resources/pins/$pinName.png",
                 ),
+                thumbnail = null,
                 created = ActionContext.from(dateTime, 1L),
                 updated = Pin.Updated(dateTime.atOffset(OffsetDateTime.now().offset)),
             )
@@ -45,9 +46,10 @@ class MockPinDataAccessImpl : PinsDataAccess {
             return Pin.Summary(
                 id = id.toLong(),
                 name = pinName,
-                resource = PinResource(
+                resource = ImageResource(
                     url = "http://localhost:9000/indarest-resources/pins/$pinName.png",
                 ),
+                thumbnail = null,
                 created = ActionContext.from(dateTime, 1L),
             )
         }
