@@ -21,7 +21,9 @@ class MockPinDataAccessImpl : PinsDataAccess {
     }
 
     companion object {
-        const val CREATED_PIN_ID = 1L
+        const val VALID_PIN_ID = 1L
+        const val INVALID_PIN_ID = -1L
+        const val ID_FOR_NOTHING_AFFECTED = 10L
         private val dateTime = LocalDateTime.now()
 
         fun createPin(id: Int): Pin {
@@ -52,7 +54,7 @@ class MockPinDataAccessImpl : PinsDataAccess {
     }
 
     override suspend fun insert(user: User, data: CreatePin.Request): Long {
-        return CREATED_PIN_ID
+        return VALID_PIN_ID
     }
 
     override suspend fun findBy(conditions: SearchCondition<Long>): List<Pin.Summary> {
@@ -79,7 +81,11 @@ class MockPinDataAccessImpl : PinsDataAccess {
     }
 
     override suspend fun update(id: Long, data: UpdatePin.Request): AffectedRows {
-        TODO("Not yet implemented")
+        return if (id == ID_FOR_NOTHING_AFFECTED) {
+            return AffectedRows(0)
+        } else {
+            return AffectedRows(1)
+        }
     }
 
     override suspend fun delete(id: Long): AffectedRows {

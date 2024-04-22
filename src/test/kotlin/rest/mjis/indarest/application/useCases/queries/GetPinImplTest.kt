@@ -16,9 +16,9 @@ class GetPinImplTest {
     @Test
     fun `핀 상세 조회시 요청한 핀이 존재하는 경우 해당 핀의 정보를 확인할 수 있다`(): Unit = runBlocking {
         // given
-        val pinId = 1
+        val pinId = MockPinDataAccessImpl.VALID_PIN_ID
         val user = User.create()
-        val request = GetPin.Request(id = pinId.toLong())
+        val request = GetPin.Request(id = pinId)
 
         // when
         val result = GetPinImpl(
@@ -27,15 +27,14 @@ class GetPinImplTest {
         println(result)
 
         // then
-        assertThat(result).isEqualTo(MockPinDataAccessImpl.createPin(pinId))
+        assertThat(result).isEqualTo(MockPinDataAccessImpl.createPin(pinId.toInt()))
     }
 
     @Test
     fun `핀 상세 조회시 요청한 핀이 존재하지 않는 경우 예외가 발생한다`(): Unit = runBlocking {
         // given
-        val invalidPinId = 999
         val user = User.create()
-        val request = GetPin.Request(id = invalidPinId.toLong())
+        val request = GetPin.Request(id = MockPinDataAccessImpl.INVALID_PIN_ID)
 
         // when
         val result = assertThrows<RuntimeException> {

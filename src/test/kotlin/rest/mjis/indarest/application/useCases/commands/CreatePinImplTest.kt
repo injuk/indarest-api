@@ -56,7 +56,7 @@ class CreatePinImplTest {
         ).execute(user, request)
 
         // then
-        assertThat(result.id).isEqualTo(MockPinDataAccessImpl.CREATED_PIN_ID)
+        assertThat(result.id).isEqualTo(MockPinDataAccessImpl.VALID_PIN_ID)
     }
 
     @Test
