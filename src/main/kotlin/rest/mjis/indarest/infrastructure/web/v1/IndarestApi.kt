@@ -9,10 +9,12 @@ import rest.mjis.indarest.application.controllers.dto.PinDto
 import rest.mjis.indarest.application.controllers.dto.PinSummaryDto
 import rest.mjis.indarest.application.controllers.dto.request.CreatePinRequest
 import rest.mjis.indarest.application.controllers.dto.request.CreateUploadUrlRequest
+import rest.mjis.indarest.application.utils.IdConverter.decode
 import rest.mjis.indarest.application.utils.IdConverter.encode
 import rest.mjis.indarest.domain.ListResponses
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.useCases.*
+import rest.mjis.indarest.infrastructure.web.extensions.PinExtension.toPublic
 import rest.mjis.indarest.infrastructure.web.extensions.PinSummaryExtension.toPublic
 import java.net.URI
 
@@ -92,7 +94,14 @@ class IndarestApi(
     override suspend fun getPin(
         @PathVariable("id") id: String,
     ): ResponseEntity<PinDto> {
-        TODO("Not yet implemented")
+        val result = createSystemUser()
+            .invoke(getPinUseCase)
+            .with(
+                GetPin.Request(id = id.decode())
+            )
+            .execute()
+
+        return ResponseEntity.ok(result.toPublic())
     }
 
     @RequestMapping(
