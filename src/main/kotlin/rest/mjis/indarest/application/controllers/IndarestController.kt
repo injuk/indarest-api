@@ -10,7 +10,7 @@ import rest.mjis.indarest.domain.useCases.CreateUploadUrl
 
 interface IndarestController {
     suspend fun createPin(request: CreatePinRequest): ResponseEntity<Unit>
-    suspend fun listPins(size: Int, cursor: String? = null): ResponseEntity<ListResponses<PinSummaryDto>>
+    suspend fun listPins(size: Int? = null, cursor: String? = null): ResponseEntity<ListResponses<PinSummaryDto>>
     suspend fun getPin(id: String): ResponseEntity<PinDto>
     suspend fun updatePin(id: String, request: Map<String, Any>): ResponseEntity<Unit>
     suspend fun deletePin(id: String): ResponseEntity<Unit>
