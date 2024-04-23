@@ -14,6 +14,7 @@ import rest.mjis.indarest.application.utils.IdConverter.encode
 import rest.mjis.indarest.domain.ListResponses
 import rest.mjis.indarest.domain.UpdatePart
 import rest.mjis.indarest.domain.User
+import rest.mjis.indarest.domain.models.ResourceType
 import rest.mjis.indarest.domain.useCases.*
 import rest.mjis.indarest.infrastructure.web.extensions.PinExtension.toPublic
 import rest.mjis.indarest.infrastructure.web.extensions.PinSummaryExtension.toPublic
@@ -164,6 +165,17 @@ class IndarestApi(
     override suspend fun createUploadUrl(
         @RequestBody request: CreateUploadUrlRequest,
     ): ResponseEntity<CreateUploadUrl.Response> {
-        TODO("Not yet implemented")
+        val result = createSystemUser()
+            .invoke(createUploadUrlUseCase)
+            .with(
+                CreateUploadUrl.Request(
+                    type = ResourceType.from(request.type.uppercase())
+                        ?: throw RuntimeException("upload url supports ${ResourceType.entries.joinToString(" or ")} type"),
+                    fileName = request.fileName,
+                )
+            )
+            .execute()
+
+        return ResponseEntity.ok(result)
     }
 }
