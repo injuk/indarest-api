@@ -21,7 +21,7 @@
     // `retrieveNewURL` accepts the name of the current file and invokes the `/presignedUrl` endpoint to
     // generate a pre-signed URL for use in uploading that file:
     function retrieveNewURL(file, cb) {
-        fetch(`http://localhost:33728/api/v1/upload-url`, {
+        fetch(`http://localhost:33728/api/v1/upload-urls`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,7 +33,7 @@
         })
             .then((response) => response.json())
             .then((body) => {
-                cb(file, body.url)
+                cb(file, body.uploadUrl)
             }).catch((e) => {
             console.error(e);
         });

@@ -159,7 +159,7 @@ class IndarestApi(
 
     @RequestMapping(
         method = [RequestMethod.POST],
-        value = ["/upload-url"],
+        value = ["/upload-urls"],
         produces = ["application/json"]
     )
     override suspend fun createUploadUrl(

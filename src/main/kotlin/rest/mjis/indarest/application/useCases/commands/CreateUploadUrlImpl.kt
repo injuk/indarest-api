@@ -15,14 +15,20 @@ class CreateUploadUrlImpl(
     private val storageClient: StorageClient,
 ) : CreateUploadUrl {
     override suspend fun execute(user: User, request: CreateUploadUrl.Request): CreateUploadUrl.Response {
-        val uploadUrl = when (request.type) {
+        val objectKey = when (request.type) {
             ResourceType.PIN -> properties.path.pins
             ResourceType.PROFILE -> properties.path.profiles
         }
             .let {
-                storageClient.createUploadUrl(objectKey = "$it/${UUID.randomUUID()}/${request.fileName}")
+                "$it/${UUID.randomUUID()}/${request.fileName}"
             }
 
-        return CreateUploadUrl.Response(uploadUrl)
+        val uploadUrl = storageClient.createUploadUrl(objectKey)
+        val resourceUrl = "${properties.endpoint}/${properties.bucket}/$objectKey"
+
+        return CreateUploadUrl.Response(
+            uploadUrl = uploadUrl,
+            resourceUrl = resourceUrl
+        )
     }
 }

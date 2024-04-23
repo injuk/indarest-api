@@ -12,6 +12,7 @@ interface CreateUploadUrl : UseCase<CreateUploadUrl.Request, CreateUploadUrl.Res
     )
 
     data class Response(
-        val url: String,
+        val uploadUrl: String,
+        val resourceUrl: String,
     )
 }
