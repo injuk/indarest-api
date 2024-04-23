@@ -1,7 +1,7 @@
 package rest.mjis.indarest.application.utils
 
+import rest.mjis.indarest.application.gateways.dataAccesses.dto.SearchCondition
 import rest.mjis.indarest.domain.ListResponses
-import rest.mjis.indarest.domain.SearchCondition
 
 internal object CursorHelper {
     private const val CHECKER = 1

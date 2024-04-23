@@ -2,11 +2,11 @@ package rest.mjis.indarest.application.useCases.queries
 
 import rest.mjis.indarest.application.core.annotations.Query
 import rest.mjis.indarest.application.gateways.dataAccesses.PinsDataAccess
+import rest.mjis.indarest.application.gateways.dataAccesses.dto.SearchCondition
 import rest.mjis.indarest.application.utils.CursorHelper
 import rest.mjis.indarest.application.utils.IdConverter.decode
 import rest.mjis.indarest.application.utils.IdConverter.encode
 import rest.mjis.indarest.domain.ListResponses
-import rest.mjis.indarest.domain.SearchCondition
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.models.Pin
 import rest.mjis.indarest.domain.useCases.ListPins

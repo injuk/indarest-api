@@ -3,8 +3,8 @@ package rest.mjis.indarest.application.utils
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import rest.mjis.indarest.application.gateways.dataAccesses.dto.SearchCondition
 import rest.mjis.indarest.domain.ListResponses
-import rest.mjis.indarest.domain.SearchCondition
 
 class CursorHelperTest {
     private val repository = (0..100).toList()

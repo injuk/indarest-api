@@ -1,8 +1,8 @@
 package rest.mjis.indarest.application.useCases
 
 import rest.mjis.indarest.application.gateways.dataAccesses.PinsDataAccess
-import rest.mjis.indarest.domain.AffectedRows
-import rest.mjis.indarest.domain.SearchCondition
+import rest.mjis.indarest.application.gateways.dataAccesses.dto.AffectedRows
+import rest.mjis.indarest.application.gateways.dataAccesses.dto.SearchCondition
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.models.ActionContext
 import rest.mjis.indarest.domain.models.ImageResource

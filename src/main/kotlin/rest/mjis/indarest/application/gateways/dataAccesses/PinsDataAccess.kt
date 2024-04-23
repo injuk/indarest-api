@@ -1,7 +1,7 @@
 package rest.mjis.indarest.application.gateways.dataAccesses
 
-import rest.mjis.indarest.domain.AffectedRows
-import rest.mjis.indarest.domain.SearchCondition
+import rest.mjis.indarest.application.gateways.dataAccesses.dto.AffectedRows
+import rest.mjis.indarest.application.gateways.dataAccesses.dto.SearchCondition
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.models.Pin
 import rest.mjis.indarest.domain.useCases.CreatePin

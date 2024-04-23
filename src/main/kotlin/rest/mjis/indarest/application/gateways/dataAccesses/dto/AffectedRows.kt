@@ -1,4 +1,4 @@
-package rest.mjis.indarest.domain
+package rest.mjis.indarest.application.gateways.dataAccesses.dto
 
 data class AffectedRows(
     val count: Int,
