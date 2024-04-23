@@ -23,7 +23,7 @@ class CreatePinImplTest {
     val properties: ApplicationProperties = ApplicationProperties(
         endpoint = VALID_ENDPOINT,
         bucket = VALID_BUCKET_NAME,
-        path = ApplicationProperties.StoragePath("pins"),
+        path = ApplicationProperties.StoragePath("pins", "profiles"),
         credential = ApplicationProperties.StorageCredential(
             accessKey = "test-access-key",
             secretKey = "test-secret-key",

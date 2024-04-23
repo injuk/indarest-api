@@ -7,11 +7,15 @@ class MockStorageClassImpl : StorageClient {
         const val VALID_OBJECT_KEY = "pins/valid-object-key.png"
     }
 
-    override suspend fun isExists(key: String): Boolean {
-        return key == VALID_OBJECT_KEY
+    override suspend fun isExists(objectKey: String): Boolean {
+        return objectKey == VALID_OBJECT_KEY
     }
 
-    override suspend fun deleteAll(keys: List<String>) {
+    override suspend fun deleteAll(objectKeys: List<String>) {
         /* do nothing */
+    }
+
+    override suspend fun createUploadUrl(objectKey: String): String {
+        TODO("Not yet implemented")
     }
 }
