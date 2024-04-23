@@ -144,7 +144,16 @@ class IndarestApi(
     override suspend fun deletePin(
         @PathVariable("id") id: String,
     ): ResponseEntity<Unit> {
-        TODO("Not yet implemented")
+        createSystemUser()
+            .invoke(deletePinUseCase)
+            .with(
+                DeletePin.Request(
+                    id = id.decode(),
+                )
+            )
+            .execute()
+
+        return ResponseEntity.noContent().build()
     }
 
     @RequestMapping(
