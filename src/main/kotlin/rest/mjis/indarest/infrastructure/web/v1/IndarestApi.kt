@@ -13,6 +13,7 @@ import rest.mjis.indarest.application.utils.IdConverter.encode
 import rest.mjis.indarest.domain.ListResponses
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.useCases.*
+import rest.mjis.indarest.infrastructure.web.extensions.PinSummaryExtension.toPublic
 import java.net.URI
 
 @Validated
@@ -28,6 +29,9 @@ class IndarestApi(
     private val deletePinUseCase: DeletePin,
     private val createUploadUrlUseCase: CreateUploadUrl,
 ) : IndarestController {
+    companion object {
+        private fun createSystemUser(): User = User.create()
+    }
 
     @RequestMapping(
         method = [RequestMethod.POST],
@@ -37,7 +41,7 @@ class IndarestApi(
     override suspend fun createPin(
         @RequestBody request: CreatePinRequest,
     ): ResponseEntity<Unit> {
-        val (pinId) = User.create()
+        val (pinId) = createSystemUser()
             .invoke(createPinUseCase)
             .with(
                 CreatePin.Request(
@@ -62,7 +66,22 @@ class IndarestApi(
         @RequestParam(value = "size") size: Int?,
         @RequestParam(value = "cursor") cursor: String?,
     ): ResponseEntity<ListResponses<PinSummaryDto>> {
-        TODO("Not yet implemented")
+        val (results, nextCursor) = createSystemUser()
+            .invoke(listPinsUseCase)
+            .with(
+                ListPins.Request(
+                    size = size,
+                    cursor = cursor,
+                )
+            )
+            .execute()
+
+        return ResponseEntity.ok(
+            ListResponses(
+                results = results.map { it.toPublic() },
+                cursor = nextCursor,
+            )
+        )
     }
 
     @RequestMapping(
