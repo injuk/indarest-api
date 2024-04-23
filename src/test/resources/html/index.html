@@ -10,8 +10,33 @@
         const [file] = document.querySelector("#selector").files;
 
         // Retrieve a URL from our server.
-        const uploadUrl = "http://localhost:9000/indarest-resources/pins/e48749a6-5757-409c-8787-1e8222d63fa9/helloworld.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=VtKRAklSyc552pWTiagd%2F20240423%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240423T101112Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=9aa384bf5ede8e76a02ebdf932c79f49fd051c2cec0aedcf085f5e1f43c283fc";
-        uploadFile(file, uploadUrl);
+        // const uploadUrl = "http://localhost:9000/indarest-resources/pins/e48749a6-5757-409c-8787-1e8222d63fa9/helloworld.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=VtKRAklSyc552pWTiagd%2F20240423%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240423T101112Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=9aa384bf5ede8e76a02ebdf932c79f49fd051c2cec0aedcf085f5e1f43c283fc";
+        retrieveNewURL(file, (file, url) => {
+            // Upload the file to the server.
+            uploadFile(file, url);
+        });
+        // uploadFile(file, uploadUrl);
+    }
+
+    // `retrieveNewURL` accepts the name of the current file and invokes the `/presignedUrl` endpoint to
+    // generate a pre-signed URL for use in uploading that file:
+    function retrieveNewURL(file, cb) {
+        fetch(`http://localhost:33728/api/v1/upload-url`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                type: "pin",
+                fileName: file.name,
+            }),
+        })
+            .then((response) => response.json())
+            .then((body) => {
+                cb(file, body.url)
+            }).catch((e) => {
+            console.error(e);
+        });
     }
 
     // ``uploadFile` accepts the current filename and the pre-signed URL. It then uses `Fetch API`
