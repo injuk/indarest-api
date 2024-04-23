@@ -1,0 +1,33 @@
+<input type="file" id="selector" multiple>
+<button onclick="upload()">Upload</button>
+
+<div id="status">No uploads</div>
+
+<script type="text/javascript">
+    // `upload` iterates through all files selected and invokes a helper function called `retrieveNewURL`.
+    function upload() {
+        // Get selected files from the input element.
+        const [file] = document.querySelector("#selector").files;
+
+        // Retrieve a URL from our server.
+        const uploadUrl = "http://localhost:9000/indarest-resources/pins/e48749a6-5757-409c-8787-1e8222d63fa9/helloworld.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=VtKRAklSyc552pWTiagd%2F20240423%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240423T101112Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=9aa384bf5ede8e76a02ebdf932c79f49fd051c2cec0aedcf085f5e1f43c283fc";
+        uploadFile(file, uploadUrl);
+    }
+
+    // ``uploadFile` accepts the current filename and the pre-signed URL. It then uses `Fetch API`
+    // to upload this file to S3 at `play.min.io:9000` using the URL:
+    function uploadFile(file, url) {
+        if (document.querySelector('#status').innerText === 'No uploads') {
+            document.querySelector('#status').innerHTML = '';
+        }
+        fetch(url, {
+            method: 'PUT',
+            body: file
+        }).then(() => {
+            // If multiple files are uploaded, append upload status on the next line.
+            document.querySelector('#status').innerHTML += `<br>Uploaded ${file.name}.`;
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
+</script>

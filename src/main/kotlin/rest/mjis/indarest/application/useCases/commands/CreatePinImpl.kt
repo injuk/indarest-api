@@ -31,6 +31,8 @@ class CreatePinImpl(
 
         val pinId = pinsDataAccess.insert(user, request)
 
+        // TODO: fire-and-forget 방식으로 썸네일 생성 후 리턴하도록 고도화 필요
+
         return CreatePin.Response(pinId)
     }
 
