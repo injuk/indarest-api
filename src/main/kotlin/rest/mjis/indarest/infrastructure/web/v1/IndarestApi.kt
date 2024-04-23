@@ -12,6 +12,7 @@ import rest.mjis.indarest.application.controllers.dto.request.CreateUploadUrlReq
 import rest.mjis.indarest.application.utils.IdConverter.decode
 import rest.mjis.indarest.application.utils.IdConverter.encode
 import rest.mjis.indarest.domain.ListResponses
+import rest.mjis.indarest.domain.UpdatePart
 import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.useCases.*
 import rest.mjis.indarest.infrastructure.web.extensions.PinExtension.toPublic
@@ -113,7 +114,26 @@ class IndarestApi(
         @PathVariable("id") id: String,
         @RequestBody request: Map<String, Any>,
     ): ResponseEntity<Unit> {
-        TODO("Not yet implemented")
+        createSystemUser()
+            .invoke(updatePinUseCase)
+            .with(
+                UpdatePin.Request(
+                    id = id.decode(),
+                    name = request.toUpdatePart("name") { it as String? },
+                    description = request.toUpdatePart("description") { it as String? },
+                )
+            )
+            .execute()
+
+        return ResponseEntity.noContent().build()
+    }
+
+    private fun <T> Map<String, Any>.toUpdatePart(name: String, convert: (Any?) -> T): UpdatePart<T> {
+        return if (this.containsKey(name)) {
+            UpdatePart.from(convert(this[name]))
+        } else {
+            UpdatePart.empty()
+        }
     }
 
     @RequestMapping(
