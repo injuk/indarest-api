@@ -8,6 +8,7 @@ import org.junit.jupiter.api.assertThrows
 import rest.mjis.indarest.application.configurations.ApplicationProperties
 import rest.mjis.indarest.application.gateways.clients.StorageClient
 import rest.mjis.indarest.application.gateways.dataAccesses.PinsDataAccess
+import rest.mjis.indarest.application.useCases.MockApplicationPropertiesHolder
 import rest.mjis.indarest.application.useCases.MockPinDataAccessImpl
 import rest.mjis.indarest.application.useCases.MockStorageClassImpl
 import rest.mjis.indarest.application.utils.IdConverter.encode
@@ -15,20 +16,7 @@ import rest.mjis.indarest.domain.User
 import rest.mjis.indarest.domain.useCases.DeletePin
 
 class DeletePinImplTest {
-    companion object {
-        private const val VALID_ENDPOINT = "http://localhost"
-        private const val VALID_BUCKET_NAME = "test-resources"
-    }
-
-    val properties: ApplicationProperties = ApplicationProperties(
-        endpoint = VALID_ENDPOINT,
-        bucket = VALID_BUCKET_NAME,
-        path = ApplicationProperties.StoragePath("pins", "profiles"),
-        credential = ApplicationProperties.StorageCredential(
-            accessKey = "test-access-key",
-            secretKey = "test-secret-key",
-        )
-    )
+    private val properties: ApplicationProperties = MockApplicationPropertiesHolder.getInstance()
 
     private val storageClient: StorageClient = MockStorageClassImpl()
 

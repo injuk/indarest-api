@@ -7,6 +7,7 @@ import org.junit.jupiter.api.assertThrows
 import rest.mjis.indarest.application.configurations.ApplicationProperties
 import rest.mjis.indarest.application.gateways.clients.StorageClient
 import rest.mjis.indarest.application.gateways.dataAccesses.PinsDataAccess
+import rest.mjis.indarest.application.useCases.MockApplicationPropertiesHolder
 import rest.mjis.indarest.application.useCases.MockPinDataAccessImpl
 import rest.mjis.indarest.application.useCases.MockStorageClassImpl
 import rest.mjis.indarest.domain.User
@@ -14,21 +15,13 @@ import rest.mjis.indarest.domain.useCases.CreatePin
 
 class CreatePinImplTest {
     companion object {
-        private const val VALID_ENDPOINT = "http://localhost"
-        private const val VALID_BUCKET_NAME = "test-resources"
+        private const val VALID_ENDPOINT = MockApplicationPropertiesHolder.VALID_ENDPOINT
+        private const val VALID_BUCKET_NAME = MockApplicationPropertiesHolder.VALID_BUCKET_NAME
         private const val VALID_ENDPOINT_PREFIX = "$VALID_ENDPOINT/$VALID_BUCKET_NAME"
         private const val VALID_RESOURCE_URL = "$VALID_ENDPOINT_PREFIX/${MockStorageClassImpl.VALID_OBJECT_KEY}"
     }
 
-    val properties: ApplicationProperties = ApplicationProperties(
-        endpoint = VALID_ENDPOINT,
-        bucket = VALID_BUCKET_NAME,
-        path = ApplicationProperties.StoragePath("pins", "profiles"),
-        credential = ApplicationProperties.StorageCredential(
-            accessKey = "test-access-key",
-            secretKey = "test-secret-key",
-        )
-    )
+    private val properties: ApplicationProperties = MockApplicationPropertiesHolder.getInstance()
 
     private val storageClient: StorageClient = MockStorageClassImpl()
 

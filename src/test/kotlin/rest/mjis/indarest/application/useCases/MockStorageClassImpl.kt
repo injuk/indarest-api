@@ -16,6 +16,6 @@ class MockStorageClassImpl : StorageClient {
     }
 
     override suspend fun createUploadUrl(objectKey: String): String {
-        TODO("Not yet implemented")
+        return objectKey
     }
 }
