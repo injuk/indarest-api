@@ -11,6 +11,7 @@ data class ApplicationProperties(
 ) {
     data class StoragePath(
         val pins: String,
+        val profiles: String,
     )
 
     data class StorageCredential(
