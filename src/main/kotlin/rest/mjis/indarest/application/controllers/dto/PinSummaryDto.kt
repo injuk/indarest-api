@@ -5,8 +5,8 @@ import rest.mjis.indarest.domain.models.ImageResource
 
 data class PinSummaryDto(
     val id: String,
-    val name: String?,
-    val resource: ImageResource?,
-    val thumbnail: ImageResource?,
+    val name: String? = null,
+    val resource: ImageResource? = null,
+    val thumbnail: ImageResource? = null,
     val created: ActionContext,
 )

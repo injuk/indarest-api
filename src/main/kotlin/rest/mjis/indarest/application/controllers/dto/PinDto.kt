@@ -6,10 +6,10 @@ import rest.mjis.indarest.domain.models.Pin
 
 data class PinDto(
     val id: String,
-    val name: String?,
-    val description: String?,
-    val resource: ImageResource?,
-    val thumbnail: ImageResource?,
+    val name: String? = null,
+    val description: String? = null,
+    val resource: ImageResource? = null,
+    val thumbnail: ImageResource? = null,
     val created: ActionContext,
     val updated: Pin.Updated,
 )
