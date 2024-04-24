@@ -13,7 +13,13 @@ class UpdatePinImpl(
     override suspend fun execute(user: User, request: UpdatePin.Request) {
         require(request.name.isDefined or request.description.isDefined) { "at least one property must be provided" }
 
-        pinsDataAccess.findOne(request.id) ?: throw RuntimeException("there is no pin(${request.id.encode()})")
+        val pin =
+            (pinsDataAccess.findOne(request.id) ?: throw RuntimeException("there is no pin(${request.id.encode()})"))
+                .also {
+                    if (it.created.by.id != user.info.id) {
+                        throw RuntimeException("cannot update other's pin")
+                    }
+                }
 
         pinsDataAccess.update(
             id = request.id,
