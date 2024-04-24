@@ -23,8 +23,14 @@ class DeletePinImpl(
     ).joinToString("/")
 
     override suspend fun execute(user: User, request: DeletePin.Request) {
-        val pin =
-            pinsDataAccess.findOne(request.id) ?: throw RuntimeException("there is no pin(${request.id.encode()})")
+        val pin = (pinsDataAccess.findOne(request.id)
+            ?: throw RuntimeException("there is no pin(${request.id.encode()})"))
+            .also {
+                if (it.created.by.id != user.info.id) {
+                    throw RuntimeException("cannot delete other's pin")
+                }
+            }
+
 
         pinsDataAccess.delete(
             id = request.id,
