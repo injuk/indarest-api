@@ -32,8 +32,8 @@ class CreateUploadUrlImplTest {
         ).execute(user, request)
 
         // then
-        assertThat(result.url.startsWith("pins")).isTrue()
-        assertThat(result.url.endsWith(request.fileName)).isTrue()
+        assertThat(result.uploadUrl.startsWith("pins")).isTrue()
+        assertThat(result.uploadUrl.endsWith(request.fileName)).isTrue()
     }
 
     @Test
@@ -52,7 +52,8 @@ class CreateUploadUrlImplTest {
         ).execute(user, request)
 
         // then
-        assertThat(result.url.startsWith("profiles")).isTrue()
-        assertThat(result.url.endsWith(request.fileName)).isTrue()
+        println(result)
+        assertThat(result.uploadUrl.startsWith("profiles")).isTrue()
+        assertThat(result.uploadUrl.endsWith(request.fileName)).isTrue()
     }
 }
