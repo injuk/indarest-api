@@ -10,6 +10,8 @@ import rest.mjis.indarest.application.useCases.MockPinDataAccessImpl
 import rest.mjis.indarest.application.utils.IdConverter.encode
 import rest.mjis.indarest.domain.UpdatePart
 import rest.mjis.indarest.domain.User
+import rest.mjis.indarest.domain.models.UserInfo
+import rest.mjis.indarest.domain.models.UserProfile
 import rest.mjis.indarest.domain.useCases.UpdatePin
 
 class UpdatePinImplTest {
@@ -72,6 +74,34 @@ class UpdatePinImplTest {
 
         // then
         assertThat(result.message).isEqualTo("there is no pin(${request.id.encode()})")
+    }
+
+    @Test
+    fun `핀 수정 요청시 요청자가 생성하지 않은 핀의 경우 예외가 발생한다`(): Unit = runBlocking {
+        // given
+        val user = User(
+            UserInfo(
+                id = -1L,
+                name = "tester",
+                email = "tester@gmail.com",
+                profile = UserProfile("http://localhost:9000/indarest-resources/profiles/001/profile.png")
+            )
+        )
+        val request = UpdatePin.Request(
+            id = MockPinDataAccessImpl.VALID_PIN_ID,
+            name = UpdatePart.from(null),
+            description = UpdatePart.from(null),
+        )
+
+        // when
+        val result = assertThrows<RuntimeException> {
+            UpdatePinImpl(
+                pinsDataAccess = pinsDataAccess,
+            ).execute(user, request)
+        }
+
+        // then
+        assertThat(result.message).isEqualTo("cannot update other's pin")
     }
 
     @Test
