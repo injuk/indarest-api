@@ -13,6 +13,8 @@ import rest.mjis.indarest.application.useCases.MockPinDataAccessImpl
 import rest.mjis.indarest.application.useCases.MockStorageClassImpl
 import rest.mjis.indarest.application.utils.IdConverter.encode
 import rest.mjis.indarest.domain.User
+import rest.mjis.indarest.domain.models.UserInfo
+import rest.mjis.indarest.domain.models.UserProfile
 import rest.mjis.indarest.domain.useCases.DeletePin
 
 class DeletePinImplTest {
@@ -62,6 +64,35 @@ class DeletePinImplTest {
 
         // then
         assertThat(result.message).isEqualTo("there is no pin(${request.id.encode()})")
+    }
+
+    @Test
+    fun `핀 삭제 요청시 요청자가 생성하지 않은 핀의 경우 예외가 발생한다`(): Unit = runBlocking {
+        // given
+        val user = User(
+            UserInfo(
+                id = -1L,
+                name = "tester",
+                email = "tester@gmail.com",
+                profile = UserProfile("http://localhost:9000/indarest-resources/profiles/001/profile.png")
+            )
+        )
+        val request = DeletePin.Request(
+            id = MockPinDataAccessImpl.VALID_PIN_ID,
+        )
+
+        // when
+        val result = assertThrows<RuntimeException> {
+            DeletePinImpl(
+                properties = properties,
+                pinsDataAccess = pinsDataAccess,
+                storageClient = storageClient,
+            )
+                .execute(user, request)
+        }
+
+        // then
+        assertThat(result.message).isEqualTo("cannot delete other's pin")
     }
 
     @Test
